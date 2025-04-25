@@ -9,95 +9,130 @@
 		<meta name="robots" content="index, follow" />
 		<!-- custom css -->
 		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 		<title>75Burger</title>
 	</head>
 	<body>
 		<header>
 			<div class="container">
 				<div class="wrapper">
-					<h1><span style="color: red">75 Burger</span> ga xushkelib siz</h1>
+					<div class="titles">
+						<h1><span style="color: red">75 Burger</span> ga xushkelib siz</h1>
+						<h3>Halolik Foydadan Ustun</h3>
+					</div>
 					<form>
-						<input type="text" name="" id="" placeholder="Ismingizni kiriting" />
+						<!-- inputs -->
+						<input type="text" placeholder="Ismingizni kiriting" minlength="1" maxlength="100" required />
 						<input
 							type="tel"
-							name=""
-							id=""
 							placeholder="Telefon raqamingizni kiriting"
 							pattern="\+998[0-9]{9}"
 							title="Telefon raqami +998XXXXXXXXX formatida bo'lishi kerak"
+							value="+998"
+							required
 						/>
-						<!-- Fast food -->
-						<div class="fastFood">
-							<select name="" id="" class="food-select">
-								<option>XOT DOG</option>
-								<option>NON DOG</option>
-								<option>PITTA</option>
-								<option>LAVASH</option>
-								<option>BURGER</option>
-							</select>
-							<!-- price select -->
-							<select name="" id="" class="price-select">
-								<option>10000</option>
-								<option>20000</option>
-								<option>30000</option>
-								<option>40000</option>
-								<option>50000</option>
-								<option>60000</option>
-								<option>70000</option>
-							</select>
-							<div class="quantity">
-								<label for="quantity">Soni</label>
-								<input type="number" name="" id="" value="1" min="1" max="30" />
+						<input
+							type="text"
+							placeholder="Manzilingizni kiriting"
+							minlength="1"
+							maxlength="100"
+							required
+						/>
+
+						<!-- Fast food container (will be duplicated) -->
+						<div id="fastFoodContainer">
+							<div class="fastFood">
+								<select class="food-select">
+									<option disabled selected>Ovqat tanlang</option>
+									<option value="hotdog">XOT DOG</option>
+									<option value="nondog">NON DOG</option>
+									<option value="pitta">PITTA</option>
+									<option value="lavash">LAVASH</option>
+									<option value="burger">BURGER</option>
+								</select>
+								<select class="price-select">
+									<option disabled selected>Narxni tanlang</option>
+									<option value="15000">15,000 so'm</option>
+									<option value="22000">22,000 so'm</option>
+									<option value="25000">25,000 so'm</option>
+									<option value="28000">28,000 so'm</option>
+									<option value="35000">35,000 so'm</option>
+								</select>
+								<div class="quantity">
+									<label>Soni</label>
+									<input type="number" value="1" min="1" max="30" />
+								</div>
 							</div>
 						</div>
-						<!-- drinks Select -->
+
+						<!-- Drinks -->
 						<div class="drinks">
-							<select name="" id="" class="drinks-select">
-								<option>COCA COLA</option>
-								<option>PEPSI</option>
-								<option>FANTA</option>
-								<option>SPRITE</option>
-								<option>RED BULL</option>
-								<option>MINERAL SUVI</option>
-								<option>AYRAN</option>
+							<select class="drinks-select">
+								<option disabled selected>Ichimlik tanlang</option>
+								<option value="cola">COCA COLA</option>
+								<option value="pepsi">PEPSI</option>
+								<option value="fanta">FANTA</option>
+								<option value="sprite">SPRITE</option>
+								<option value="redbull">RED BULL</option>
+								<option value="water">MINERAL SUVI</option>
+								<option value="ayran">AYRAN</option>
 							</select>
-							<!-- hajmi -->
-							<select name="" id="" class="size-select">
-								<option>0.5L</option>
-								<option>1.0L</option>
-								<option>1.5L</option>
-								<option>2.0L</option>
-								<option>2.5L</option>
+							<select class="size-select">
+								<option disabled selected>Hajmini tanlang</option>
+								<option value="0.5">0.5L</option>
+								<option value="1.0">1.0L</option>
+								<option value="1.5">1.5L</option>
+								<option value="2.0">2.0L</option>
+								<option value="2.5">2.5L</option>
 							</select>
-							<!-- price select -->
-							<select name="" id="">
-								<option>5000</option>
-								<option>6000</option>
-								<option>7000</option>
-								<option>8000</option>
-								<option>9000</option>
-								<option>10000</option>
-								<option>11000</option>
+							<select class="drinks-price">
+								<option disabled selected>Narxni tanlang</option>
+								<option value="5000">5,000 so'm</option>
+								<option value="8000">8,000 so'm</option>
+								<option value="12000">12,000 so'm</option>
+								<option value="15000">15,000 so'm</option>
+								<option value="18000">18,000 so'm</option>
 							</select>
+							<div class="quantity">
+								<label>Soni</label>
+								<input type="number" value="1" min="1" max="30" />
+							</div>
 						</div>
+
 						<!-- Roasted -->
 						<div class="roasted">
-							<select name="" id="" class="roasted">
-								<option>KFS</option>
-								<option>BALIQ</option>
-								<option>TOVUQ QANOTLARI</option>
-								<option>KARTOSHKA FRIES</option>
+							<select class="roasted-select">
+								<option disabled selected>Qovurilgan taom tanlang</option>
+								<option value="kfs">KFS</option>
+								<option value="fish">BALIQ</option>
+								<option value="wings">TOVUQ QANOTLARI</option>
+								<option value="fries">KARTOSHKA FRIES</option>
 							</select>
-							<!-- QUANTITY -->
+							<select class="roasted-price">
+								<option disabled selected>Narxni tanlang</option>
+								<option value="45000">45,000 so'm</option>
+								<option value="55000">55,000 so'm</option>
+								<option value="40000">40,000 so'm</option>
+								<option value="15000">15,000 so'm</option>
+							</select>
 							<div class="quantity">
-								<label for="quantity">MIQDORI</label>
-								<input type="number" name="" id="" value="1" min="1" max="30" />
+								<label>MIQDORI <b>"KG"</b> da</label>
+								<input type="number" value="1" min="1" max="30" />
 							</div>
 						</div>
-						<!-- submit -->
+
+						<!-- Total -->
+						<div class="total">
+							<span class="total-amount">
+								Umumiy Summa: <span id="totalAmount" style="color: red">0</span> so'm
+							</span>
+						</div>
+
+						<!-- Submit -->
 						<div class="submit">
-							<span class="total-amount">Umumiy Summa: <span id="totalAmount">0</span> so'm</span>
-							<input type="submit" value="Buyurtma berish" />
+							<button type="button" class="add-more-btn" id="addMoreBtn">Yana qo'shish</button>
+							<button type="button" class="order-btn" id="orderBtn">Buyurtma berish</button>
 						</div>
 					</form>
 				</div>
