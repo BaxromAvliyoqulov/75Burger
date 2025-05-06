@@ -7,138 +7,154 @@
 		<meta name="keywords" content="burger, fast food, 75Burger" />
 		<meta name="author" content="Baxrom_Dev" />
 		<meta name="robots" content="index, follow" />
-		<!-- custom css -->
-		<link rel="stylesheet" href="style.css" />
-		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+		<!-- Style -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+		<!-- font awesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+			integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<!-- custom -->
+		<link rel="stylesheet" href="css/style.css" />
 		<title>75Burger</title>
 	</head>
 	<body>
 		<header>
 			<div class="container">
 				<div class="wrapper">
+					<!-- Title -->
 					<div class="titles">
-						<h1><span style="color: red">75 Burger</span> ga xushkelib siz</h1>
+						<h1><span class="accent">75 Burger</span> ga xushkelib siz</h1>
 						<h3>Halolik Foydadan Ustun</h3>
 					</div>
-					<form>
-						<!-- inputs -->
-						<input type="text" placeholder="Ismingizni kiriting" minlength="1" maxlength="100" required />
-						<input
-							type="tel"
-							placeholder="Telefon raqamingizni kiriting"
-							pattern="\+998[0-9]{9}"
-							title="Telefon raqami +998XXXXXXXXX formatida bo'lishi kerak"
-							value="+998"
-							required
-						/>
-						<input
-							type="text"
-							placeholder="Manzilingizni kiriting"
-							minlength="1"
-							maxlength="100"
-							required
-						/>
-
-						<!-- Fast food container (will be duplicated) -->
+					<!-- Order Form -->
+					<form id="orderForm">
+						<!-- Contact Form -->
+						<div class="contact-info">
+							<input
+								type="text"
+								placeholder="Ismingizni kiriting"
+								minlength="1"
+								maxlength="100"
+								required
+							/>
+							<input
+								type="tel"
+								placeholder="Telefon raqamingizni kiriting"
+								pattern="\+998[0-9]{9}"
+								title="Telefon raqami +998XXXXXXXXX formatida bo'lishi kerak"
+								value="+998"
+								required
+							/>
+							<input
+								type="text"
+								placeholder="Manzilingizni kiriting"
+								minlength="1"
+								maxlength="100"
+								required
+							/>
+						</div>
+						<!-- roasted select -->
+						<div class="roasted">
+							<select class="roasted-select">
+								<!-- Options will be populated by JavaScript -->
+								<option disabled selected>Qovurilgan taom tanlang</option>
+							</select>
+							<!-- roasted-price -->
+							<select class="roasted-price">
+								<!-- Options will be populated by JavaScript -->
+								<option disabled selected>Narxni tanlang</option>
+							</select>
+							<!-- quantity -->
+							<div class="roastedQuantity">
+								<label>MIQDORI <b>"KG"</b> da</label>
+								<input type="number" value="1" min="1" max="30" id="quantity" />
+							</div>
+							<!-- add more -->
+							<div class="roastedAddMore">
+								<i class="fa-solid fa-plus" id="addMoreBtn"></i>
+							</div>
+						</div>
+						<!-- fast food select -->
 						<div id="fastFoodContainer">
 							<div class="fastFood">
 								<select class="food-select">
+									<!-- Options will be populated by JavaScript -->
 									<option disabled selected>Ovqat tanlang</option>
-									<option value="hotdog">XOT DOG</option>
-									<option value="nondog">NON DOG</option>
-									<option value="pitta">PITTA</option>
-									<option value="lavash">LAVASH</option>
-									<option value="burger">BURGER</option>
 								</select>
+								<!-- prise select -->
 								<select class="price-select">
+									<!-- Options will be populated by JavaScript -->
 									<option disabled selected>Narxni tanlang</option>
-									<option value="15000">15,000 so'm</option>
-									<option value="22000">22,000 so'm</option>
-									<option value="25000">25,000 so'm</option>
-									<option value="28000">28,000 so'm</option>
-									<option value="35000">35,000 so'm</option>
 								</select>
-								<div class="quantity">
+								<!-- quantity -->
+								<div class="fastFoodQuantity">
 									<label>Soni</label>
-									<input type="number" value="1" min="1" max="30" />
+									<input type="number" value="1" min="1" max="30" id="quantity" />
+								</div>
+								<!-- add more -->
+								<div class="fastFoodAddMore">
+									<i class="fa-solid fa-plus" id="addMoreBtn"></i>
 								</div>
 							</div>
 						</div>
-
-						<!-- Drinks -->
+						<!-- drinks select -->
 						<div class="drinks">
 							<select class="drinks-select">
+								<!-- Options will be populated by JavaScript -->
 								<option disabled selected>Ichimlik tanlang</option>
-								<option value="cola">COCA COLA</option>
-								<option value="pepsi">PEPSI</option>
-								<option value="fanta">FANTA</option>
-								<option value="sprite">SPRITE</option>
-								<option value="redbull">RED BULL</option>
-								<option value="water">MINERAL SUVI</option>
-								<option value="ayran">AYRAN</option>
 							</select>
+							<!-- size-select -->
 							<select class="size-select">
+								<!-- Options will be populated by JavaScript -->
 								<option disabled selected>Hajmini tanlang</option>
-								<option value="0.5">0.5L</option>
-								<option value="1.0">1.0L</option>
-								<option value="1.5">1.5L</option>
-								<option value="2.0">2.0L</option>
-								<option value="2.5">2.5L</option>
 							</select>
-							<select class="drinks-price">
-								<option disabled selected>Narxni tanlang</option>
-								<option value="5000">5,000 so'm</option>
-								<option value="8000">8,000 so'm</option>
-								<option value="12000">12,000 so'm</option>
-								<option value="15000">15,000 so'm</option>
-								<option value="18000">18,000 so'm</option>
-							</select>
-							<div class="quantity">
+							<!-- quantity -->
+							<div class="drinksQuantity">
 								<label>Soni</label>
-								<input type="number" value="1" min="1" max="30" />
+								<input type="number" value="1" min="1" max="30" id="quantity" />
+							</div>
+							<!-- add more -->
+							<div class="drinksAddMore">
+								<i class="fa-solid fa-plus" id="addMoreBtn"></i>
 							</div>
 						</div>
-
-						<!-- Roasted -->
-						<div class="roasted">
-							<select class="roasted-select">
-								<option disabled selected>Qovurilgan taom tanlang</option>
-								<option value="kfs">KFS</option>
-								<option value="fish">BALIQ</option>
-								<option value="wings">TOVUQ QANOTLARI</option>
-								<option value="fries">KARTOSHKA FRIES</option>
-							</select>
-							<select class="roasted-price">
-								<option disabled selected>Narxni tanlang</option>
-								<option value="45000">45,000 so'm</option>
-								<option value="55000">55,000 so'm</option>
-								<option value="40000">40,000 so'm</option>
-								<option value="15000">15,000 so'm</option>
-							</select>
-							<div class="quantity">
-								<label>MIQDORI <b>"KG"</b> da</label>
-								<input type="number" value="1" min="1" max="30" />
+						<!-- payment style -->
+						<div class="payment-style">
+							<label for="payment">To'lov usulini tanlang</label>
+							<div class="payment-options">
+								<div class="payment-option">
+									<input type="radio" name="payment" id="cash" value="cash" checked />
+									<label for="cash">Naqd pul</label>
+								</div>
+								<div class="payment-option">
+									<input type="radio" name="payment" id="card" value="card" />
+									<label for="card">Plastik karta</label>
+								</div>
 							</div>
+							<div id="cardNumberContainer" class="card-info"></div>
 						</div>
-
-						<!-- Total -->
+						<!-- total -->
 						<div class="total">
 							<span class="total-amount">
-								Umumiy Summa: <span id="totalAmount" style="color: red">0</span> so'm
+								Umumiy Summa:
+								<span id="totalAmount" class="accent">0</span> so'm
 							</span>
 						</div>
-
-						<!-- Submit -->
+						<!-- sending buttons -->
 						<div class="submit">
-							<button type="button" class="add-more-btn" id="addMoreBtn">Yana qo'shish</button>
 							<button type="button" class="order-btn" id="orderBtn">Buyurtma berish</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</header>
-		<!-- script -->
+		<!-- toasty.js -->
+		<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+		<!-- scripts -->
 		<script src="app.js"></script>
 	</body>
 </html>
