@@ -7,7 +7,7 @@
 		<meta name="keywords" content="burger, fast food, 75Burger" />
 		<meta name="author" content="Baxrom_Dev" />
 		<meta name="robots" content="index, follow" />
-		<!-- Style -->
+		<!-- toastify -->
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
 		<!-- font awesome -->
 		<link
@@ -17,8 +17,9 @@
 			crossorigin="anonymous"
 			referrerpolicy="no-referrer"
 		/>
-		<!-- custom -->
+		<!-- Style -->
 		<link rel="stylesheet" href="css/style.css" />
+		<!-- Title -->
 		<title>75Burger</title>
 	</head>
 	<body>
@@ -29,9 +30,16 @@
 					<div class="titles">
 						<h1><span class="accent">75 Burger</span> ga xushkelib siz</h1>
 						<h3>Halolik Foydadan Ustun</h3>
+						<div class="daysOfweek">
+							<p>
+								<b>Har kuni:</b>
+								<span class="accent">10:00 - 23:00</span>
+								<b class="accent">Yakshanba dam olish kuni</b>
+							</p>
+						</div>
 					</div>
 					<!-- Order Form -->
-					<form id="orderForm">
+					<form id="orderForm" class="order-form">
 						<!-- Contact Form -->
 						<div class="contact-info">
 							<input
@@ -81,7 +89,7 @@
 						<!-- fast food select -->
 						<div id="fastFoodContainer">
 							<div class="fastFood">
-								<select class="food-select">
+								<select class="food-select" required aria-label="Fast food tanlang">
 									<!-- Options will be populated by JavaScript -->
 									<option disabled selected>Ovqat tanlang</option>
 								</select>
@@ -103,7 +111,7 @@
 						</div>
 						<!-- drinks select -->
 						<div class="drinks">
-							<select class="drinks-select">
+							<select class="drinks-select" required aria-label="Ichimlik tanlang">
 								<!-- Options will be populated by JavaScript -->
 								<option disabled selected>Ichimlik tanlang</option>
 							</select>
@@ -112,20 +120,26 @@
 								<!-- Options will be populated by JavaScript -->
 								<option disabled selected>Hajmini tanlang</option>
 							</select>
+							<!-- prise select -->
+							<select class="drinks-price">
+								<!-- Options will be populated by JavaScript -->
+								<option disabled selected>Narxni tanlang</option>
+							</select>
 							<!-- quantity -->
 							<div class="drinksQuantity">
 								<label>Soni</label>
 								<input type="number" value="1" min="1" max="30" id="quantity" />
 							</div>
+
 							<!-- add more -->
 							<div class="drinksAddMore">
 								<i class="fa-solid fa-plus" id="addMoreBtn"></i>
 							</div>
 						</div>
 						<!-- payment style -->
-						<div class="payment-style">
-							<label for="payment">To'lov usulini tanlang</label>
-							<div class="payment-options">
+						<div class="payment-section">
+							<label for="payment" style="font-weight: bold">To'lov usulini tanlang</label>
+							<div class="payment-method">
 								<div class="payment-option">
 									<input type="radio" name="payment" id="cash" value="cash" checked />
 									<label for="cash">Naqd pul</label>
@@ -135,7 +149,14 @@
 									<label for="card">Plastik karta</label>
 								</div>
 							</div>
-							<div id="cardNumberContainer" class="card-info"></div>
+							<!-- Card Container -->
+							<div id="cardNumberContainer" class="card-info">
+								<!-- <i class="fa-solid fa-credit-card"></i> -->
+								<span id="cardNumber">4200 4073 6598 3812</span>
+								&nbsp;
+								<i class="fa-solid fa-copy"></i>
+								<h3 id="cardHolder">Jon Doe</h3>
+							</div>
 						</div>
 						<!-- total -->
 						<div class="total">
@@ -146,7 +167,7 @@
 						</div>
 						<!-- sending buttons -->
 						<div class="submit">
-							<button type="button" class="order-btn" id="orderBtn">Buyurtma berish</button>
+							<button type="submit" class="order-btn" id="orderBtn">Buyurtma berish</button>
 						</div>
 					</form>
 				</div>
@@ -154,7 +175,7 @@
 		</header>
 		<!-- toasty.js -->
 		<script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-		<!-- scripts -->
+		<!-- main js  -->
 		<script src="app.js"></script>
 	</body>
 </html>
