@@ -66,27 +66,31 @@
 							/>
 						</div>
 						<!-- roasted select -->
-						<div class="roasted">
-							<select class="roasted-select">
-								<!-- Options will be populated by JavaScript -->
-								<option disabled selected>Qovurilgan taom tanlang</option>
-							</select>
-							<!-- roasted-price -->
-							<select class="roasted-price">
-								<!-- Options will be populated by JavaScript -->
-								<option disabled selected>Narxni tanlang</option>
-							</select>
-							<!-- quantity -->
-							<div class="roastedQuantity">
-								<label>MIQDORI <b>"KG"</b> da</label>
-								<input type="number" value="1" min="1" max="30" id="quantity" />
-							</div>
-							<!-- add more -->
-							<div class="roastedAddMore">
-								<i class="fa-solid fa-plus" id="addMoreBtn"></i>
+						<!-- Roasted Container -->
+						<div id="roastedContainer">
+							<div class="roasted">
+								<select class="roasted-select">
+									<!-- Options will be populated by JavaScript -->
+									<option disabled selected>Qovurilgan taom tanlang</option>
+								</select>
+								<!-- roasted-price -->
+								<select class="roasted-price">
+									<!-- Options will be populated by JavaScript -->
+									<option disabled selected>Narxni tanlang</option>
+								</select>
+								<!-- quantity -->
+								<div class="roastedQuantity">
+									<label>MIQDORI <b>"KG"</b> da</label>
+									<input type="number" value="1" min="1" max="30" id="quantity" />
+								</div>
+								<!-- add more -->
+								<div class="roastedAddMore">
+									<i class="fa-solid fa-plus" id="addMoreBtn"></i>
+								</div>
 							</div>
 						</div>
 						<!-- fast food select -->
+						<!-- FastFood Container -->
 						<div id="fastFoodContainer">
 							<div class="fastFood">
 								<select class="food-select" required aria-label="Fast food tanlang">
@@ -110,30 +114,33 @@
 							</div>
 						</div>
 						<!-- drinks select -->
-						<div class="drinks">
-							<select class="drinks-select" required aria-label="Ichimlik tanlang">
-								<!-- Options will be populated by JavaScript -->
-								<option disabled selected>Ichimlik tanlang</option>
-							</select>
-							<!-- size-select -->
-							<select class="size-select">
-								<!-- Options will be populated by JavaScript -->
-								<option disabled selected>Hajmini tanlang</option>
-							</select>
-							<!-- prise select -->
-							<select class="drinks-price">
-								<!-- Options will be populated by JavaScript -->
-								<option disabled selected>Narxni tanlang</option>
-							</select>
-							<!-- quantity -->
-							<div class="drinksQuantity">
-								<label>Soni</label>
-								<input type="number" value="1" min="1" max="30" id="quantity" />
-							</div>
+						<!-- Drinks Container -->
+						<div id="drinksContainer">
+							<div class="drinks">
+								<select class="drinks-select" required aria-label="Ichimlik tanlang">
+									<!-- Options will be populated by JavaScript -->
+									<option disabled selected>Ichimlik tanlang</option>
+								</select>
+								<!-- size-select -->
+								<select class="size-select">
+									<!-- Options will be populated by JavaScript -->
+									<option disabled selected>Hajmini tanlang</option>
+								</select>
+								<!-- prise select -->
+								<select class="drinks-price">
+									<!-- Options will be populated by JavaScript -->
+									<option disabled selected>Narxni tanlang</option>
+								</select>
+								<!-- quantity -->
+								<div class="drinksQuantity">
+									<label>Soni</label>
+									<input type="number" value="1" min="1" max="30" id="quantity" />
+								</div>
 
-							<!-- add more -->
-							<div class="drinksAddMore">
-								<i class="fa-solid fa-plus" id="addMoreBtn"></i>
+								<!-- add more -->
+								<div class="drinksAddMore">
+									<i class="fa-solid fa-plus" id="addMoreBtn"></i>
+								</div>
 							</div>
 						</div>
 						<!-- payment style -->

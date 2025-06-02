@@ -116,13 +116,13 @@ function addMoreSection(selector, containerId) {
 	const original = document.querySelector(selector);
 	const clone = original.cloneNode(true);
 
-	// Сбрасываем значения
+	// Очищаем значения
 	clone.querySelectorAll("select, input").forEach((el) => {
 		if (el.tagName === "SELECT") el.selectedIndex = 0;
 		if (el.type === "number") el.value = 1;
 	});
 
-	// Удаляем плюс иконку
+	// Удаляем плюс иконку если есть
 	const plusIcon = clone.querySelector(".fa-plus");
 	if (plusIcon) {
 		plusIcon.parentElement.remove();
@@ -139,14 +139,37 @@ function addMoreSection(selector, containerId) {
 	};
 	clone.appendChild(deleteBtn);
 
+	// Находим правильный контейнер для каждого типа
+	let container;
+	if (selector.includes("fastFood")) {
+		container = document.getElementById("fastFoodContainer");
+	} else if (selector.includes("roasted")) {
+		container = document.getElementById("roastedContainer");
+	} else if (selector.includes("drinks")) {
+		container = document.getElementById("drinksContainer");
+	}
+
+	if (!container) {
+		console.error(`Container not found for ${selector}`);
+		return;
+	}
+
 	// Добавляем в контейнер
-	const container = document.getElementById(containerId);
 	container.appendChild(clone);
 
 	// Добавляем слушатели
 	clone.querySelectorAll("select, input[type='number']").forEach((el) => {
 		el.addEventListener("change", calculateTotal);
 	});
+
+	// Добавляем специфические обработчики
+	if (selector.includes("fastFood")) {
+		clone.querySelector(".food-select")?.addEventListener("change", handleFastFoodChange);
+	} else if (selector.includes("roasted")) {
+		clone.querySelector(".roasted-select")?.addEventListener("change", handleRoastedChange);
+	} else if (selector.includes("drinks")) {
+		clone.querySelector(".drinks-select")?.addEventListener("change", handleDrinksChange);
+	}
 }
 // Copy Card Number Event Listener
 // Adding event listeners for card number copy
@@ -338,18 +361,18 @@ function addEventListeners() {
 		input.addEventListener("input", calculateTotal);
 	});
 	// Fast Food ➕ button
-	document.querySelector(".fastFoodAddMore i").addEventListener("click", () => {
+	document.querySelector(".fastFoodAddMore i")?.addEventListener("click", () => {
 		addMoreSection(".fastFood", "fastFoodContainer");
 	});
 
 	// Roasted ➕ button
-	document.querySelector(".roastedAddMore i").addEventListener("click", () => {
-		addMoreSection(".roasted", "orderForm");
+	document.querySelector(".roastedAddMore i")?.addEventListener("click", () => {
+		addMoreSection(".roasted", "roastedContainer");
 	});
 
 	// Drinks ➕ button
-	document.querySelector(".drinksAddMore i").addEventListener("click", () => {
-		addMoreSection(".drinks", "orderForm");
+	document.querySelector(".drinksAddMore i")?.addEventListener("click", () => {
+		addMoreSection(".drinks", "drinksContainer");
 	});
 
 	// Payment methods
