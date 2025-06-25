@@ -42,28 +42,9 @@
 					<form id="orderForm" class="order-form">
 						<!-- Contact Form -->
 						<div class="contact-info">
-							<input
-								type="text"
-								placeholder="Ismingizni kiriting"
-								minlength="1"
-								maxlength="100"
-								required
-							/>
-							<input
-								type="tel"
-								placeholder="Telefon raqamingizni kiriting"
-								pattern="\+998[0-9]{9}"
-								title="Telefon raqami +998XXXXXXXXX formatida bo'lishi kerak"
-								value="+998"
-								required
-							/>
-							<input
-								type="text"
-								placeholder="Manzilingizni kiriting"
-								minlength="1"
-								maxlength="100"
-								required
-							/>
+							<input type="text" name="name" placeholder="Ismingiz" required />
+							<input type="tel" name="phone" placeholder="Telefon" required />
+							<input type="text" name="address" placeholder="Manzil" required />
 						</div>
 						<!-- roasted select -->
 						<!-- Roasted Container -->

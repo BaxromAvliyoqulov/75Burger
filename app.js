@@ -270,67 +270,117 @@ function handleDrinksChange(e) {
 		calculateTotal();
 	}
 }
-// Sending to Telegram Bot
-function sendOrderToTelegram() {
-	const form = elements.form;
-	const isValid = [...form.querySelectorAll("[required]")].every((f) => f.value.trim() !== "");
-	if (!isValid) {
-		showToast("Barcha maydonlarni to‘ldiring", "error");
+// Sending to Server
+function sendOrder(e) {
+	e.preventDefault();
+
+	// Получаем данные формы
+	const name = document.querySelector('input[name="name"]')?.value?.trim();
+	const phone = document.querySelector('input[name="phone"]')?.value?.trim();
+	const address = document.querySelector('input[name="address"]')?.value?.trim();
+
+	// Проверяем данные
+	if (!name || !phone || !address) {
+		showToast("Iltimos, shaxsiy ma'lumotlarni to'ldiring", "error");
 		return;
 	}
 
-	const name = form.querySelector('input[name="name"]').value;
-	const phone = form.querySelector('input[name="phone"]').value;
-	const address = form.querySelector('input[name="address"]').value;
-	const paymentMethod = elements.cardRadio.checked ? "Karta" : "Naqd";
+	// Собираем заказанные товары
+	const orderItems = [];
+	let totalAmount = 0;
 
-	// Mahsulotlar ro'yxati
-	let orderDetails = "";
+	// Проверяем каждую секцию
+	document.querySelectorAll(".fastFood, .roasted, .drinks").forEach((item) => {
+		const select = item.querySelector("select");
+		const quantity = item.querySelector('input[type="number"]');
+		const price = item.querySelector(".price-select, .roasted-price, .drinks-price");
 
-	document.querySelectorAll(".order-item").forEach((item, idx) => {
-		const foodName = item.querySelector(".food-select").selectedOptions[0]?.textContent || "-";
-		const price = item.querySelector(".price-select, .roasted-price, .drinks-price").value || 0;
-		const quantity = item.querySelector('input[type="number"]').value || 0;
-		if (quantity > 0) {
-			orderDetails += `${idx + 1}. ${foodName} - ${quantity} ta - ${parseInt(price).toLocaleString()} so'm\n`;
+		if (select?.selectedIndex > 0 && quantity?.value > 0 && price?.value) {
+			const itemTotal = parseInt(price.value) * parseInt(quantity.value);
+			totalAmount += itemTotal;
+			orderItems.push({
+				name: select.selectedOptions[0].text,
+				quantity: quantity.value,
+				price: price.value,
+				total: itemTotal,
+			});
 		}
 	});
 
+	if (orderItems.length === 0) {
+		showToast("Kamida bitta maxsulot tanlang", "error");
+		return;
+	}
+
+	// Формируем сообщение для Telegram
 	const message = `
-	Yangi buyurtma:
-	Ism: ${name}
-	Telefon: ${phone}
-	Manzil: ${address}
-	To'lov: ${paymentMethod}
-	Buyurtma:
-	${orderDetails}
-	Jami summa: ${elements.totalAmount.textContent} so'm
-	`;
+🛍 Yangi buyurtma!
 
-	const botToken = "TOKEN_HERE"; // o'zgartiring
-	const chatId = "CHAT_ID_HERE"; // o'zgartiring
-	const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+👤 Mijoz ma'lumotlari:
+    Ismi: ${name}
+    Tel: ${phone}
+    Manzil: ${address}
 
-	fetch(url, {
+🍽 Buyurtma tarkibi:
+${orderItems
+	.map((item) => `- ${item.name} x ${item.quantity} = ${parseInt(item.total).toLocaleString()} so'm`)
+	.join("\n")}
+
+💰 Jami: ${totalAmount.toLocaleString()} so'm
+
+💳 To'lov turi: ${elements.cardRadio.checked ? "Karta" : "Naqd"}
+${elements.cardRadio.checked ? `\nKarta raqami: ${document.querySelector("#cardNumber").textContent}` : ""}
+
+📅 Vaqt: ${new Date().toLocaleString("uz-UZ")}
+`;
+
+	// Отправляем в Telegram
+	const BOT_TOKEN = "7990511752:AAF__F5OZigqQCG9LNuUA9Kv_yjH7zTgIko";
+	const CHAT_ID = "587788509";
+	const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+	fetch(TELEGRAM_API, {
 		method: "POST",
-		headers: { "Content-Type": "application/json" },
-		body: JSON.stringify({ chat_id: chatId, text: message }),
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+			chat_id: CHAT_ID,
+			text: message,
+			parse_mode: "HTML",
+		}),
 	})
-		.then((res) => res.json())
+		.then((response) => response.json())
 		.then((data) => {
 			if (data.ok) {
-				showToast("Buyurtma muvaffaqiyatli yuborildi!");
-				form.reset();
+				showToast("Buyurtmangiz qabul qilindi!");
+				// Сбрасываем форму
+				elements.form.reset();
 				elements.totalAmount.textContent = "0";
 				handlePaymentMethodChange();
+
+				// Сбрасываем селекты
+				document.querySelectorAll("select").forEach((select) => {
+					select.selectedIndex = 0;
+					if (select.classList.contains("price-select")) {
+						select.disabled = true;
+					}
+				});
+
+				// Сбрасываем количества
+				document.querySelectorAll('input[type="number"]').forEach((input) => {
+					input.value = 1;
+				});
 			} else {
-				showToast("Yuborishda xatolik yuz berdi", "error");
+				throw new Error("Telegram API error");
 			}
 		})
-		.catch(() => {
-			showToast("Tarmoqda muammo bor", "error");
+		.catch((error) => {
+			console.error("Error:", error);
+			showToast("Buyurtmani yuborishda xatolik yuz berdi", "error");
 		});
 }
+
 // Adding Event Listeners
 function addEventListeners() {
 	// Fast food
@@ -380,26 +430,19 @@ function addEventListeners() {
 	elements.cardRadio?.addEventListener("change", handlePaymentMethodChange);
 
 	// Order button
-	elements.orderButton?.addEventListener("click", (e) => {
-		e.preventDefault();
-		sendOrderToTelegram();
-	});
+	elements.orderButton?.addEventListener("click", sendOrder);
 }
 // Initial Setup
 function init() {
 	try {
-		// Select opsiyalarni to‘ldirish
 		fillFastFoodOptions();
 		fillRoastedOptions();
 		fillDrinksOptions();
 
-		// To‘lov turini boshlang‘ich holatda sozlash
 		handlePaymentMethodChange();
 
-		// Event listener'lar
 		addEventListeners();
 
-		// Dastlabki umumiy summani hisoblash
 		calculateTotal();
 	} catch (error) {
 		console.error("Initialization error:", error);
