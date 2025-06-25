@@ -24,27 +24,27 @@ const menuData = {
 		{ id: "hotdog", name: "XOT DOG", prices: [15000, 22000, 28000] },
 		{ id: "nondog", name: "NON DOG", prices: [12000, 18000, 25000] },
 		{ id: "pitta", name: "PITTA", prices: [25000, 32000, 38000] },
-		{ id: "lavash", name: "LAVASH", prices: [22000, 28000, 32000] },
+		{ id: "lavash", name: "LAVASH", prices: [30000, 35000, 40000] },
 		{ id: "burger", name: "BURGER", prices: [25000, 32000, 38000] },
 	],
 	drinks: [
 		{
 			id: "cola",
 			name: "COCA COLA",
-			sizes: ["0.5L", "1.0L", "1.5L", "2.0L"],
-			prices: [5000, 8000, 12000, 15000],
+			sizes: ["0.5L", "1.0L", "1.5L"],
+			prices: [8000, 12000, 15000],
 		},
 		{
 			id: "pepsi",
 			name: "PEPSI",
-			sizes: ["0.5L", "1.0L", "1.5L", "2.0L"],
-			prices: [5000, 8000, 12000, 15000],
+			sizes: ["0.5L", "1.0L", "1.5L"],
+			prices: [8000, 12000, 15000],
 		},
 		{
 			id: "fanta",
 			name: "FANTA",
-			sizes: ["0.5L", "1.0L", "1.5L", "2.0L"],
-			prices: [5000, 8000, 12000, 15000],
+			sizes: ["0.5L", "1.0L", "1.5L"],
+			prices: [8000, 12000, 15000],
 		},
 		{
 			id: "gorilla",
@@ -271,7 +271,7 @@ function handleDrinksChange(e) {
 	}
 }
 // Sending to Server
-function sendOrder(e) {
+async function sendOrder(e) {
 	e.preventDefault();
 
 	// Получаем данные формы
@@ -336,49 +336,56 @@ ${elements.cardRadio.checked ? `\nKarta raqami: ${document.querySelector("#cardN
 
 	// Отправляем в Telegram
 	const BOT_TOKEN = "7990511752:AAF__F5OZigqQCG9LNuUA9Kv_yjH7zTgIko";
-	const CHAT_ID = "7496952374";
+	const CHAT_IDS = ["7496952374", "587788509"];
 	const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
-	fetch(TELEGRAM_API, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({
-			chat_id: CHAT_ID,
-			text: message,
-			parse_mode: "HTML",
-		}),
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			if (data.ok) {
-				showToast("Buyurtmangiz qabul qilindi!");
-				// Сбрасываем форму
-				elements.form.reset();
-				elements.totalAmount.textContent = "0";
-				handlePaymentMethodChange();
+	try {
+		// Отправляем каждому получателю отдельно
+		for (const chatId of CHAT_IDS) {
+			const response = await fetch(TELEGRAM_API, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					chat_id: chatId,
+					text: message,
+					parse_mode: "HTML",
+				}),
+			});
 
-				// Сбрасываем селекты
-				document.querySelectorAll("select").forEach((select) => {
-					select.selectedIndex = 0;
-					if (select.classList.contains("price-select")) {
-						select.disabled = true;
-					}
-				});
+			const data = await response.json();
 
-				// Сбрасываем количества
-				document.querySelectorAll('input[type="number"]').forEach((input) => {
-					input.value = 1;
-				});
-			} else {
-				throw new Error("Telegram API error");
+			if (!data.ok) {
+				console.error(`Ошибка отправки для ID ${chatId}:`, data);
+				throw new Error(`Telegram error for ${chatId}: ${data.description}`);
 			}
-		})
-		.catch((error) => {
-			console.error("Error:", error);
-			showToast("Buyurtmani yuborishda xatolik yuz berdi", "error");
+		}
+
+		// Если дошли сюда - значит все сообщения отправлены успешно
+		showToast("Buyurtmangiz qabul qilindi!");
+
+		// Сбрасываем форму
+		elements.form.reset();
+		elements.totalAmount.textContent = "0";
+		handlePaymentMethodChange();
+
+		// Сбрасываем селекты
+		document.querySelectorAll("select").forEach((select) => {
+			select.selectedIndex = 0;
+			if (select.classList.contains("price-select")) {
+				select.disabled = true;
+			}
 		});
+
+		// Сбрасываем количества
+		document.querySelectorAll('input[type="number"]').forEach((input) => {
+			input.value = 1;
+		});
+	} catch (error) {
+		console.error("Telegram error:", error);
+		showToast("Buyurtmani yuborishda xatolik yuz berdi", "error");
+	}
 }
 
 // Adding Event Listeners
