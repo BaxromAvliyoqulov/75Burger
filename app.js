@@ -226,14 +226,13 @@ function handleFastFoodChange(e) {
 	const item = menuData.fastFood.find((i) => i.id === e.target.value);
 	const priceSelect = e.target.closest(".fastFood").querySelector(".price-select");
 	clearSelect(priceSelect, "Narx tanlang");
+
 	if (item) {
+		const sizeLabels = ["Kichik", "O'rta", "Katta", "XL", "XXL"];
 		item.prices.forEach((price, idx) => {
-			const size = ["Kichik", "O'rta", "Katta"][idx];
+			const size = sizeLabels[idx] || `Variant ${idx + 1}`;
 			addOption(priceSelect, price, `${size} - ${price.toLocaleString()} so'm`);
 		});
-	}
-	calculateTotal();
-}
 // Roasted
 function handleRoastedChange(e) {
 	const item = menuData.roasted.find((i) => i.id === e.target.value);
