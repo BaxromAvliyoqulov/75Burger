@@ -15,7 +15,7 @@ const elements = {
 //Menu items
 const menuData = {
 	roasted: [
-		{ id: "kfs", name: "KFS", price: 45000 },
+		{ id: "kfs", name: "KFS", price: 85000 },
 		{ id: "fish", name: "BALIQ", price: 55000 },
 		{ id: "wings", name: "TOVUQ QANOTLARI", price: 40000 },
 		{ id: "fries", name: "KARTOSHKA FRIES", price: 15000 },
