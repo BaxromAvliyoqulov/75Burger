@@ -17,7 +17,7 @@ const menuData = {
 	roasted: [
 		{ id: "kfs", name: "KFS", price: 85000 },
 		{ id: "fish", name: "BALIQ", price: 70000 },
-		{ id: "wings", name: "TOVUQ QANOTLARI", price: 40000 },
+		{ id: "wings", name: "TOVUQ QANOTLARI", price: 80000 },
 		{ id: "fries", name: "KARTOSHKA FRIES", price: 15000 },
 	],
 	fastFood: [
