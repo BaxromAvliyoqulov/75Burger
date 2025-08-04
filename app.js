@@ -15,6 +15,17 @@ const elements = {
 //Menu items
 const menuData = {
 	roasted: [
+<<<<<<< HEAD
+		{ id: "kfs", name: "KFS", price: 80000 },
+		{ id: "fish", name: "BALIQ", price: 70000 },
+		{ id: "fries", name: "KARTOSHKA FRIES", price: 15000 },
+	],
+	fastFood: [
+		{ id: "hotdog", name: "XOT DOG", prices: [15000, 25000, 35000] },
+		{ id: "pitta", name: "PITTA", prices: [35000, 40000] },
+		{ id: "lavash", name: "LAVASH", prices: [30000, 35000, 40000] },
+		{ id: "burger", name: "BURGER", prices: [35000, 45000] },
+=======
 		{ id: "kfs", name: "KFS", price: 85000 },
 		{ id: "fish", name: "BALIQ", price: 70000 },
 		{ id: "wings", name: "TOVUQ QANOTLARI", price: 80000 },
@@ -27,6 +38,7 @@ const menuData = {
 		{ id: "pitta", name: "PITTA", prices: [30000, 35000, 40000] },
 		{ id: "lavash", name: "LAVASH", prices: [30000, 35000, 40000] },
 		{ id: "burger", name: "BURGER", prices: [30000] },
+>>>>>>> f7979aaa5dc0278f4b3fb2ceae1fa6640ceaa4a6
 	],
 	drinks: [
 		{
