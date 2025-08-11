@@ -19,13 +19,15 @@ const menuData = {
 		{ id: "fish", name: "BALIQ", price: 70000 },
 		{ id: "fries", name: "KARTOSHKA FRIES", price: 15000 },
 	],
+	// Yangilangan fastFood ma'lumotlari
 	fastFood: [
-		{ id: "hotdog", name: "XOT DOG", prices: [15000, 25000] },
-		{ id: "bighotdog", name: "BIG XOT DOG", prices: [35000] },
-		{ id: "pitta", name: "PITTA", prices: [35000, 40000] },
-		{ id: "lavash", name: "LAVASH", prices: [30000, 35000, 40000] },
-		{ id: "burger", name: "BURGER", prices: [35000, 45000] },
+		{ id: "hotdog", name: "XOT DOG", sizes: ["Kichik", "Katta"], prices: [15000, 25000] },
+		{ id: "bighotdog", name: "BIG XOT DOG", sizes: ["Standart"], prices: [35000] },
+		{ id: "pitta", name: "PITTA", sizes: ["Kichik", "Katta"], prices: [35000, 40000] },
+		{ id: "lavash", name: "LAVASH", sizes: ["Kichik", "O'rta", "Katta"], prices: [30000, 35000, 40000] },
+		{ id: "burger", name: "BURGER", sizes: ["Standart", "Big"], prices: [35000, 45000] },
 	],
+
 	drinks: [
 		{
 			id: "cola",
@@ -170,11 +172,14 @@ function addMoreSection(selector, containerId) {
 		clone.querySelector(".drinks-select")?.addEventListener("change", handleDrinksChange);
 	}
 }
+
 // Copy Card Number Event Listener
-// Adding event listeners for card number copy
+
 document.querySelector("#cardNumber")?.addEventListener("click", copyCardNumber);
 document.querySelector(".fa-copy")?.addEventListener("click", copyCardNumber);
+
 // Total Amount Calculation
+
 function calculateTotal() {
 	let total = 0;
 	document.querySelectorAll(".fastFood").forEach((item) => {
@@ -220,6 +225,7 @@ function fillDrinksOptions() {
 	});
 }
 // Fast Food
+// Dinamik handleFastFoodChange
 function handleFastFoodChange(e) {
 	const item = menuData.fastFood.find((i) => i.id === e.target.value);
 	const priceSelect = e.target.closest(".fastFood")?.querySelector(".price-select");
@@ -227,15 +233,15 @@ function handleFastFoodChange(e) {
 	clearSelect(priceSelect, "Narx tanlang");
 
 	if (item) {
-		const sizeLabels = ["Kichik", "O'rta", "Katta", "XL", "XXL"];
 		item.prices.forEach((price, idx) => {
-			const size = sizeLabels[idx] || `Variant ${idx + 1}`;
-			addOption(priceSelect, price, `${size} - ${price.toLocaleString()} so'm`);
+			let sizeName = item.sizes && item.sizes[idx] ? item.sizes[idx] : `Variant ${idx + 1}`;
+			addOption(priceSelect, price, `${sizeName} - ${price.toLocaleString()} so'm`);
 		});
 		priceSelect.disabled = false;
 	}
 	calculateTotal();
 }
+
 // Roasted
 function handleRoastedChange(e) {
 	const item = menuData.roasted.find((i) => i.id === e.target.value);
