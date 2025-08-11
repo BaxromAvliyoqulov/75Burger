@@ -12,51 +12,48 @@ const elements = {
 	cardDetails: document.querySelector("#cardNumberContainer"),
 	orderButton: document.querySelector("#orderBtn"),
 };
-
-// Fixed Menu items
+//Menu items
 const menuData = {
 	roasted: [
-		{ id: "kfs", name: "KFS", price: 85000 },
+		{ id: "kfs", name: "KFS", price: 80000 },
 		{ id: "fish", name: "BALIQ", price: 70000 },
-		{ id: "wings", name: "TOVUQ QANOTLARI", price: 80000 },
 		{ id: "fries", name: "KARTOSHKA FRIES", price: 15000 },
 	],
 	fastFood: [
-		{ id: "hotdog", name: "XOT DOG", prices: [15000, 20000] },
-		{ id: "bighotdog", name: "BIG XOT DOG", prices: [35000, 40000] },
-		{ id: "nondog", name: "NON DOG", prices: [20000, 25000, 30000] },
-		{ id: "pitta", name: "PITTA", prices: [30000, 35000, 40000] },
+		{ id: "hotdog", name: "XOT DOG", prices: [15000, 25000] },
+		{ id: "bighotdog", name: "BIG XOT DOG", prices: [35000] },
+		{ id: "pitta", name: "PITTA", prices: [30000, 40000] },
 		{ id: "lavash", name: "LAVASH", prices: [30000, 35000, 40000] },
-		{ id: "burger", name: "BURGER", prices: [30000] },
+		{ id: "burger", name: "BURGER", prices: [35000, 45000] },
 	],
 	drinks: [
 		{
 			id: "cola",
 			name: "COCA COLA",
-			sizes: ["0.5L", "1.0L", "1.5L"],
-			prices: [8000, 12000, 15000],
+			sizes: ["0.5L", "1.0L", "1.5L", "2.0L"],
+			prices: [8000, 12000, 15000, 20000],
 		},
 		{
 			id: "pepsi",
 			name: "PEPSI",
-			sizes: ["0.5L", "1.0L", "1.5L"],
-			prices: [8000, 12000, 15000],
+			sizes: ["0.5L", "1.0L", "1.5L", "2.0L"],
+			prices: [8000, 12000, 15000, 20000],
 		},
 		{
 			id: "fanta",
 			name: "FANTA",
-			sizes: ["0.5L", "1.0L", "1.5L"],
-			prices: [8000, 12000, 15000],
-		},
-		{
-			id: "gorilla",
-			name: "GORILLA",
-			prices: 12000,
+			sizes: ["0.5L", "1.0L", "1.5L", "2.0L"],
+			prices: [8000, 12000, 15000, 20000],
 		},
 		{
 			id: "adrenaline",
 			name: "ADRENALINE",
 			prices: 17000,
+		},
+		{
+			id: "gorilla",
+			name: "GORILLA",
+			prices: 12000,
 		},
 		{
 			id: "sok",
@@ -65,7 +62,6 @@ const menuData = {
 		},
 	],
 };
-
 // Utility functions
 function clearSelect(select, placeholder) {
 	if (!select) return;
@@ -81,69 +77,57 @@ function addOption(select, value, label) {
 }
 
 function showToast(message, type = "success") {
-	if (typeof Toastify !== 'undefined') {
-		Toastify({
-			text: message,
-			duration: 3000,
-			close: true,
-			gravity: "top",
-			position: "right",
-			backgroundColor: type === "success" ? "#4CAF50" : "#F44336",
-		}).showToast();
-	} else {
-		alert(message); // Fallback if Toastify is not available
-	}
+	Toastify({
+		text: message,
+		duration: 3000,
+		close: true,
+		gravity: "top",
+		position: "right",
+		backgroundColor: type === "success" ? "#4CAF50" : "#F44336",
+	}).showToast();
 }
-
 // Payment Method Change Handler
 function handlePaymentMethodChange() {
 	if (!elements.cardDetails) return;
-	elements.cardDetails.classList.toggle("show", elements.cardRadio?.checked || false);
+	elements.cardDetails.classList.toggle("show", elements.cardRadio.checked);
 }
-
 // Copy Card Number Function
 function copyCardNumber() {
-	const cardNumberElement = document.querySelector("#cardNumber");
-	if (!cardNumberElement) return;
-	
-	const cardNumber = cardNumberElement.textContent;
+	const cardNumber = document.querySelector("#cardNumber").textContent;
 
-	// Create temporary input
+	// Создаем временный input
 	const tempInput = document.createElement("input");
-	tempInput.value = cardNumber.replace(/\s/g, ""); // Remove spaces
+	tempInput.value = cardNumber.replace(/\s/g, ""); // Убираем пробелы
 	document.body.appendChild(tempInput);
 
-	// Select and copy
+	// Выбираем и копируем
 	tempInput.select();
 	document.execCommand("copy");
 
-	// Remove temporary input
+	// Удаляем временный input
 	document.body.removeChild(tempInput);
 
-	// Show notification
+	// Показываем уведомление
 	showToast("Karta raqami nusxalandi!");
 }
-
-// Add More Section
+// Add More
 function addMoreSection(selector, containerId) {
 	const original = document.querySelector(selector);
-	if (!original) return;
-	
 	const clone = original.cloneNode(true);
 
-	// Clear values
+	// Очищаем значения
 	clone.querySelectorAll("select, input").forEach((el) => {
 		if (el.tagName === "SELECT") el.selectedIndex = 0;
 		if (el.type === "number") el.value = 1;
 	});
 
-	// Remove plus icon if exists
+	// Удаляем плюс иконку если есть
 	const plusIcon = clone.querySelector(".fa-plus");
 	if (plusIcon) {
 		plusIcon.parentElement.remove();
 	}
 
-	// Add delete button
+	// Добавляем кнопку удаления
 	const deleteBtn = document.createElement("button");
 	deleteBtn.type = "button";
 	deleteBtn.className = "delete-btn";
@@ -154,7 +138,7 @@ function addMoreSection(selector, containerId) {
 	};
 	clone.appendChild(deleteBtn);
 
-	// Find correct container for each type
+	// Находим правильный контейнер для каждого типа
 	let container;
 	if (selector.includes("fastFood")) {
 		container = document.getElementById("fastFoodContainer");
@@ -169,233 +153,165 @@ function addMoreSection(selector, containerId) {
 		return;
 	}
 
-	// Add to container
+	// Добавляем в контейнер
 	container.appendChild(clone);
 
-	// Add listeners
+	// Добавляем слушатели
 	clone.querySelectorAll("select, input[type='number']").forEach((el) => {
 		el.addEventListener("change", calculateTotal);
 	});
 
-	// Add specific handlers
+	// Добавляем специфические обработчики
 	if (selector.includes("fastFood")) {
-		const foodSelect = clone.querySelector(".food-select");
-		if (foodSelect) {
-			foodSelect.addEventListener("change", handleFastFoodChange);
-			// Reinitialize options
-			fillFastFoodOptions(foodSelect);
-		}
+		clone.querySelector(".food-select")?.addEventListener("change", handleFastFoodChange);
 	} else if (selector.includes("roasted")) {
-		const roastedSelect = clone.querySelector(".roasted-select");
-		if (roastedSelect) {
-			roastedSelect.addEventListener("change", handleRoastedChange);
-			// Reinitialize options
-			fillRoastedOptions(roastedSelect);
-		}
+		clone.querySelector(".roasted-select")?.addEventListener("change", handleRoastedChange);
 	} else if (selector.includes("drinks")) {
-		const drinksSelect = clone.querySelector(".drinks-select");
-		if (drinksSelect) {
-			drinksSelect.addEventListener("change", handleDrinksChange);
-			// Reinitialize options
-			fillDrinksOptions(drinksSelect);
-		}
+		clone.querySelector(".drinks-select")?.addEventListener("change", handleDrinksChange);
 	}
 }
-
+// Copy Card Number Event Listener
+// Adding event listeners for card number copy
+document.querySelector("#cardNumber")?.addEventListener("click", copyCardNumber);
+document.querySelector(".fa-copy")?.addEventListener("click", copyCardNumber);
 // Total Amount Calculation
 function calculateTotal() {
 	let total = 0;
-	
-	// Calculate fastFood total
 	document.querySelectorAll(".fastFood").forEach((item) => {
-		const priceSelect = item.querySelector(".price-select");
-		const quantityInput = item.querySelector('input[type="number"]');
-		
-		const price = parseInt(priceSelect?.value || 0);
-		const qty = parseInt(quantityInput?.value || 0);
-		
-		if (!isNaN(price) && !isNaN(qty) && price > 0 && qty > 0) {
-			total += price * qty;
-		}
+		const price = parseInt(item.querySelector(".price-select")?.value || 0);
+		const qty = parseInt(item.querySelector('input[type="number"]')?.value || 0);
+		if (!isNaN(price) && !isNaN(qty)) total += price * qty;
 	});
-	
-	// Calculate roasted total
 	document.querySelectorAll(".roasted").forEach((item) => {
-		const priceSelect = item.querySelector(".roasted-price");
-		const quantityInput = item.querySelector('input[type="number"]');
-		
-		const price = parseInt(priceSelect?.value || 0);
-		const qty = parseInt(quantityInput?.value || 0);
-		
-		if (!isNaN(price) && !isNaN(qty) && price > 0 && qty > 0) {
-			total += price * qty;
-		}
+		const price = parseInt(item.querySelector(".roasted-price")?.value || 0);
+		const qty = parseInt(item.querySelector('input[type="number"]')?.value || 0);
+		if (!isNaN(price) && !isNaN(qty)) total += price * qty;
 	});
-	
-	// Calculate drinks total
 	document.querySelectorAll(".drinks").forEach((item) => {
-		const priceSelect = item.querySelector(".drinks-price");
-		const quantityInput = item.querySelector('input[type="number"]');
-		
-		const price = parseInt(priceSelect?.value || 0);
-		const qty = parseInt(quantityInput?.value || 0);
-		
-		if (!isNaN(price) && !isNaN(qty) && price > 0 && qty > 0) {
-			total += price * qty;
-		}
+		const price = parseInt(item.querySelector(".drinks-price")?.value || 0);
+		const qty = parseInt(item.querySelector('input[type="number"]')?.value || 0);
+		if (!isNaN(price) && !isNaN(qty)) total += price * qty;
 	});
-	
-	if (elements.totalAmount) {
-		elements.totalAmount.textContent = total.toLocaleString();
-	}
-	
+	elements.totalAmount.textContent = total.toLocaleString();
 	return total;
 }
-
 // Filling Select Options from Menu Data
-function fillFastFoodOptions(selectElement = null) {
-	const select = selectElement || document.querySelector(".food-select");
-	if (!select) return;
-	
+function fillFastFoodOptions() {
+	const select = document.querySelector(".food-select");
 	clearSelect(select, "Fast food tanlang");
 	menuData.fastFood.forEach((item) => {
 		addOption(select, item.id, item.name);
 	});
 }
-
 // Filling Roasted Options
-function fillRoastedOptions(selectElement = null) {
-	const select = selectElement || document.querySelector(".roasted-select");
-	if (!select) return;
-	
+function fillRoastedOptions() {
+	const select = document.querySelector(".roasted-select");
 	clearSelect(select, "Qovurilgan tanlang");
 	menuData.roasted.forEach((item) => {
 		addOption(select, item.id, item.name);
 	});
 }
-
 // Filling Drinks Options
-function fillDrinksOptions(selectElement = null) {
-	const select = selectElement || document.querySelector(".drinks-select");
-	if (!select) return;
-	
+function fillDrinksOptions() {
+	const select = document.querySelector(".drinks-select");
 	clearSelect(select, "Ichimlik tanlang");
 	menuData.drinks.forEach((item) => {
 		addOption(select, item.id, item.name);
 	});
 }
-
-// Fast Food Change Handler
+// Fast Food
 function handleFastFoodChange(e) {
-	const selectedId = e.target.value;
-	const item = menuData.fastFood.find((i) => i.id === selectedId);
-	const priceSelect = e.target.closest(".fastFood").querySelector(".price-select");
-	
+	const item = menuData.fastFood.find((i) => i.id === e.target.value);
+	const priceSelect = e.target.closest(".fastFood")?.querySelector(".price-select");
+	if (!priceSelect) return;
 	clearSelect(priceSelect, "Narx tanlang");
 
-	if (item && item.prices) {
+	if (item) {
 		const sizeLabels = ["Kichik", "O'rta", "Katta", "XL", "XXL"];
 		item.prices.forEach((price, idx) => {
 			const size = sizeLabels[idx] || `Variant ${idx + 1}`;
 			addOption(priceSelect, price, `${size} - ${price.toLocaleString()} so'm`);
 		});
+		priceSelect.disabled = false;
 	}
 	calculateTotal();
 }
-
-// Roasted Change Handler
+// Roasted
 function handleRoastedChange(e) {
-	const selectedId = e.target.value;
-	const item = menuData.roasted.find((i) => i.id === selectedId);
-	const priceSelect = e.target.closest(".roasted").querySelector(".roasted-price");
-	
+	const item = menuData.roasted.find((i) => i.id === e.target.value);
+	const priceSelect = e.target.closest(".roasted")?.querySelector(".roasted-price");
+	if (!priceSelect) return;
 	clearSelect(priceSelect, "Narx tanlang");
-	
-	if (item && item.price) {
+	if (item) {
 		addOption(priceSelect, item.price, `${item.price.toLocaleString()} so'm`);
-		priceSelect.value = item.price;
+		priceSelect.disabled = false;
 	}
 	calculateTotal();
 }
-
-// Drinks Change Handler
+// Drinks
 function handleDrinksChange(e) {
-	const selectedId = e.target.value;
-	const item = menuData.drinks.find((i) => i.id === selectedId);
-	const sizeSelect = e.target.closest(".drinks").querySelector(".size-select");
-	const priceSelect = e.target.closest(".drinks").querySelector(".drinks-price");
-	
-	if (sizeSelect) clearSelect(sizeSelect, "Hajm tanlang");
+	const item = menuData.drinks.find((i) => i.id === e.target.value);
+	const container = e.target.closest(".drinks");
+	const sizeSelect = container?.querySelector(".size-select");
+	const priceSelect = container?.querySelector(".drinks-price");
+	if (!sizeSelect || !priceSelect) return;
+	clearSelect(sizeSelect, "Hajm tanlang");
 	clearSelect(priceSelect, "Narx tanlang");
 
-	if (!item) return;
-
-	if (Array.isArray(item.prices) && item.sizes) {
-		// Multi-size drinks
+	if (Array.isArray(item?.prices)) {
 		item.sizes.forEach((size, idx) => {
-			if (sizeSelect) {
-				addOption(sizeSelect, idx, `${size} - ${item.prices[idx].toLocaleString()} so'm`);
-			}
+			addOption(sizeSelect, idx, `${size} - ${item.prices[idx].toLocaleString()} so'm`);
 		});
-
-		if (sizeSelect) {
-			sizeSelect.onchange = function () {
-				const selectedIndex = parseInt(this.value);
-				const price = item.prices[selectedIndex];
-				clearSelect(priceSelect, "Narx tanlang");
-				addOption(priceSelect, price, `${price.toLocaleString()} so'm`);
-				priceSelect.value = price;
-				calculateTotal();
-			};
-		}
-	} else {
-		// Single price drinks
-		const price = item.prices;
-		if (sizeSelect) {
-			addOption(sizeSelect, 0, `Standard`);
-		}
-		addOption(priceSelect, price, `${price.toLocaleString()} so'm`);
-		priceSelect.value = price;
+		sizeSelect.disabled = false;
+		sizeSelect.onchange = function () {
+			const price = item.prices[this.value];
+			clearSelect(priceSelect, "Narx tanlang");
+			addOption(priceSelect, price, `${price.toLocaleString()} so'm`);
+			priceSelect.value = price;
+			priceSelect.disabled = false;
+			calculateTotal();
+		};
+	} else if (item) {
+		addOption(sizeSelect, 0, `Standard`);
+		addOption(priceSelect, item.prices, `${item.prices.toLocaleString()} so'm`);
+		priceSelect.value = item.prices;
+		sizeSelect.disabled = false;
+		priceSelect.disabled = false;
 		calculateTotal();
 	}
 }
-
 // Sending to Server
 async function sendOrder(e) {
 	e.preventDefault();
 
-	// Get form data
-	const nameInput = document.querySelector('input[name="name"]');
-	const phoneInput = document.querySelector('input[name="phone"]');
-	const addressInput = document.querySelector('input[name="address"]');
+	// Получаем данные формы
+	const name = document.querySelector('input[name="name"]')?.value?.trim();
+	const phone = document.querySelector('input[name="phone"]')?.value?.trim();
+	const address = document.querySelector('input[name="address"]')?.value?.trim();
 
-	const name = nameInput?.value?.trim();
-	const phone = phoneInput?.value?.trim();
-	const address = addressInput?.value?.trim();
-
-	// Validate data
+	// Проверяем данные
 	if (!name || !phone || !address) {
 		showToast("Iltimos, shaxsiy ma'lumotlarni to'ldiring", "error");
 		return;
 	}
 
-	// Collect ordered items
+	// Собираем заказанные товары
 	const orderItems = [];
 	let totalAmount = 0;
 
-	// Check each section
+	// Проверяем каждую секцию
 	document.querySelectorAll(".fastFood, .roasted, .drinks").forEach((item) => {
 		const select = item.querySelector("select");
 		const quantity = item.querySelector('input[type="number"]');
-		const priceSelect = item.querySelector(".price-select, .roasted-price, .drinks-price");
+		const price = item.querySelector(".price-select, .roasted-price, .drinks-price");
 
-		if (select?.selectedIndex > 0 && quantity?.value > 0 && priceSelect?.value) {
-			const itemTotal = parseInt(priceSelect.value) * parseInt(quantity.value);
+		if (select?.selectedIndex > 0 && quantity?.value > 0 && price?.value) {
+			const itemTotal = parseInt(price.value) * parseInt(quantity.value);
 			totalAmount += itemTotal;
 			orderItems.push({
 				name: select.selectedOptions[0].text,
 				quantity: quantity.value,
-				price: priceSelect.value,
+				price: price.value,
 				total: itemTotal,
 			});
 		}
@@ -406,10 +322,7 @@ async function sendOrder(e) {
 		return;
 	}
 
-	// Form message for Telegram
-	const cardNumberElement = document.querySelector("#cardNumber");
-	const cardNumber = cardNumberElement ? cardNumberElement.textContent : "";
-	
+	// Формируем сообщение для Telegram
 	const message = `
 🛍 Yangi buyurtma!
 
@@ -425,19 +338,19 @@ ${orderItems
 
 💰 Jami: ${totalAmount.toLocaleString()} so'm
 
-💳 To'lov turi: ${elements.cardRadio?.checked ? "Karta" : "Naqd"}
-${elements.cardRadio?.checked && cardNumber ? `\nKarta raqami: ${cardNumber}` : ""}
+💳 To'lov turi: ${elements.cardRadio.checked ? "Karta" : "Naqd"}
+${elements.cardRadio.checked ? `\nKarta raqami: ${document.querySelector("#cardNumber").textContent}` : ""}
 
 📅 Vaqt: ${new Date().toLocaleString("uz-UZ")}
 `;
 
-	// Send to Telegram
+	// Отправляем в Telegram
 	const BOT_TOKEN = "7990511752:AAF__F5OZigqQCG9LNuUA9Kv_yjH7zTgIko";
 	const CHAT_IDS = ["7496952374", "587788509"];
 	const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
 	try {
-		// Send to each recipient separately
+		// Отправляем каждому получателю отдельно
 		for (const chatId of CHAT_IDS) {
 			const response = await fetch(TELEGRAM_API, {
 				method: "POST",
@@ -454,33 +367,31 @@ ${elements.cardRadio?.checked && cardNumber ? `\nKarta raqami: ${cardNumber}` : 
 			const data = await response.json();
 
 			if (!data.ok) {
-				console.error(`Sending error for ID ${chatId}:`, data);
+				console.error(`Ошибка отправки для ID ${chatId}:`, data);
 				throw new Error(`Telegram error for ${chatId}: ${data.description}`);
 			}
 		}
 
-		// If we get here - all messages sent successfully
+		// Если дошли сюда - значит все сообщения отправлены успешно
 		showToast("Buyurtmangiz qabul qilindi!");
 
-		// Reset form
-		if (elements.form) {
-			elements.form.reset();
-		}
-		if (elements.totalAmount) {
-			elements.totalAmount.textContent = "0";
-		}
+		// Сбрасываем форму
+		elements.form.reset();
+		elements.totalAmount.textContent = "0";
 		handlePaymentMethodChange();
 
-		// Reset selects
+		// Сбрасываем селекты
 		document.querySelectorAll("select").forEach((select) => {
 			select.selectedIndex = 0;
+			if (select.classList.contains("price-select")) {
+				select.disabled = true;
+			}
 		});
 
-		// Reset quantities
+		// Сбрасываем количества
 		document.querySelectorAll('input[type="number"]').forEach((input) => {
 			input.value = 1;
 		});
-
 	} catch (error) {
 		console.error("Telegram error:", error);
 		showToast("Buyurtmani yuborishda xatolik yuz berdi", "error");
@@ -490,27 +401,24 @@ ${elements.cardRadio?.checked && cardNumber ? `\nKarta raqami: ${cardNumber}` : 
 // Adding Event Listeners
 function addEventListeners() {
 	// Fast food
-	if (elements.fastFoodSelect) {
-		elements.fastFoodSelect.addEventListener("change", (e) => {
-			handleFastFoodChange(e);
-		});
-	}
+	elements.fastFoodSelect?.addEventListener("change", (e) => {
+		handleFastFoodChange(e);
+		calculateTotal();
+	});
 
 	// Roasted
-	if (elements.roastedSelect) {
-		elements.roastedSelect.addEventListener("change", (e) => {
-			handleRoastedChange(e);
-		});
-	}
+	elements.roastedSelect?.addEventListener("change", (e) => {
+		handleRoastedChange(e);
+		calculateTotal();
+	});
 
 	// Drinks
-	if (elements.drinksSelect) {
-		elements.drinksSelect.addEventListener("change", (e) => {
-			handleDrinksChange(e);
-		});
-	}
+	elements.drinksSelect?.addEventListener("change", (e) => {
+		handleDrinksChange(e);
+		calculateTotal();
+	});
 
-	// All price selects
+	// All select changes
 	document.querySelectorAll(".price-select, .roasted-price, .drinks-price").forEach((select) => {
 		select.addEventListener("change", calculateTotal);
 	});
@@ -519,75 +427,40 @@ function addEventListeners() {
 	document.querySelectorAll('input[type="number"]').forEach((input) => {
 		input.addEventListener("input", calculateTotal);
 	});
+	// Fast Food ➕ button
+	document.querySelector(".fastFoodAddMore i")?.addEventListener("click", () => {
+		addMoreSection(".fastFood", "fastFoodContainer");
+	});
 
-	// Add more buttons
-	const fastFoodAddBtn = document.querySelector(".fastFoodAddMore i");
-	if (fastFoodAddBtn) {
-		fastFoodAddBtn.addEventListener("click", () => {
-			addMoreSection(".fastFood", "fastFoodContainer");
-		});
-	}
+	// Roasted ➕ button
+	document.querySelector(".roastedAddMore i")?.addEventListener("click", () => {
+		addMoreSection(".roasted", "roastedContainer");
+	});
 
-	const roastedAddBtn = document.querySelector(".roastedAddMore i");
-	if (roastedAddBtn) {
-		roastedAddBtn.addEventListener("click", () => {
-			addMoreSection(".roasted", "roastedContainer");
-		});
-	}
-
-	const drinksAddBtn = document.querySelector(".drinksAddMore i");
-	if (drinksAddBtn) {
-		drinksAddBtn.addEventListener("click", () => {
-			addMoreSection(".drinks", "drinksContainer");
-		});
-	}
+	// Drinks ➕ button
+	document.querySelector(".drinksAddMore i")?.addEventListener("click", () => {
+		addMoreSection(".drinks", "drinksContainer");
+	});
 
 	// Payment methods
-	if (elements.cashRadio) {
-		elements.cashRadio.addEventListener("change", handlePaymentMethodChange);
-	}
-	if (elements.cardRadio) {
-		elements.cardRadio.addEventListener("change", handlePaymentMethodChange);
-	}
+	elements.cashRadio?.addEventListener("change", handlePaymentMethodChange);
+	elements.cardRadio?.addEventListener("change", handlePaymentMethodChange);
 
 	// Order button
-	if (elements.orderButton) {
-		elements.orderButton.addEventListener("click", sendOrder);
-	}
-
-	// Card number copy functionality
-	const cardNumberElement = document.querySelector("#cardNumber");
-	const copyIcon = document.querySelector(".fa-copy");
-	
-	if (cardNumberElement) {
-		cardNumberElement.addEventListener("click", copyCardNumber);
-	}
-	if (copyIcon) {
-		copyIcon.addEventListener("click", copyCardNumber);
-	}
+	elements.orderButton?.addEventListener("click", sendOrder);
 }
-
 // Initial Setup
 function init() {
 	try {
-		console.log("Initializing food ordering system...");
-		
-		// Fill options for all selects
 		fillFastFoodOptions();
 		fillRoastedOptions();
 		fillDrinksOptions();
 
-		// Setup payment method display
 		handlePaymentMethodChange();
 
-		// Add all event listeners
 		addEventListeners();
 
-		// Calculate initial total
 		calculateTotal();
-		
-		console.log("Food ordering system initialized successfully!");
-		
 	} catch (error) {
 		console.error("Initialization error:", error);
 		showToast("Ilovani ishga tushirishda xatolik", "error");
@@ -595,8 +468,4 @@ function init() {
 }
 
 // Start app when DOM is ready
-if (document.readyState === 'loading') {
-	document.addEventListener("DOMContentLoaded", init);
-} else {
-	init();
-}
+document.addEventListener("DOMContentLoaded", init);
