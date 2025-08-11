@@ -22,7 +22,7 @@ const menuData = {
 	fastFood: [
 		{ id: "hotdog", name: "XOT DOG", prices: [15000, 25000] },
 		{ id: "bighotdog", name: "BIG XOT DOG", prices: [35000] },
-		{ id: "pitta", name: "PITTA", prices: [30000, 40000] },
+		{ id: "pitta", name: "PITTA", prices: [35000, 40000] },
 		{ id: "lavash", name: "LAVASH", prices: [30000, 35000, 40000] },
 		{ id: "burger", name: "BURGER", prices: [35000, 45000] },
 	],
